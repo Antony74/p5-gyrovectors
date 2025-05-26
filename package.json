@@ -1,0 +1,35 @@
+{
+    "name": "p5-gyrovectors",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "parcel src/index.html"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Antony74/p5-gyrovectors.git"
+    },
+    "keywords": [
+        "p5",
+        "gyrovectors",
+        "hyperbolic",
+        "non-euclidean",
+        "geometry"
+    ],
+    "author": "Antony74",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Antony74/p5-gyrovectors/issues"
+    },
+    "homepage": "https://github.com/Antony74/p5-gyrovectors#readme",
+    "description": "",
+    "dependencies": {
+        "p5": "^2.0.2"
+    },
+    "devDependencies": {
+        "parcel": "^2.15.2"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "singleQuote": false
+    }
+}
