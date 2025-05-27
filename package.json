@@ -2,7 +2,9 @@
     "name": "p5-gyrovectors",
     "version": "1.0.0",
     "scripts": {
-        "start": "rimraf dist && parcel src/index.html"
+        "prettier": "prettier --write .",
+        "start": "rimraf dist && parcel src/index.html",
+        "tsc": "rimraf dist && tsc"
     },
     "repository": {
         "type": "git",
@@ -28,6 +30,7 @@
     "devDependencies": {
         "@types/p5": "^1.7.6",
         "parcel": "^2.15.2",
+        "prettier": "^3.5.3",
         "rimraf": "^6.0.1",
         "typescript": "^5.8.3"
     },
