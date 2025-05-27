@@ -1,37 +1,59 @@
 import { CoordsXY } from './coordsXY';
+import { Gyrovector } from './gyrovector';
 
-export class VectorXY implements CoordsXY {
-    type: Readonly<string> = 'CoordsXY';
+export type GyrovectorXY = Gyrovector<2> & CoordsXY;
+export type VectorXY = GyrovectorXY & {
+    magSq: () => number;
+    mag: () => number;
+};
 
-    constructor(
-        public readonly x: number,
-        public readonly y: number,
-    ) {}
+export const createVectorXYFactory = () => {
+    const factory = {
+        createVector: (x: number, y: number) => {
+            const vector: VectorXY = {
+                magSq: () => {
+                    return factory.dot(vector, vector);
+                },
 
-    static dot(u: CoordsXY, v: CoordsXY): number {
-        return u.x * v.x + u.y * v.y;
-    }
+                mag: () => {
+                    return vector.magSq();
+                },
 
-    static add(u: CoordsXY, v: CoordsXY): VectorXY {
-        return new VectorXY(u.x + v.x, u.y + v.y);
-    }
+                add: (v: GyrovectorXY): GyrovectorXY => {
+                    return factory.add(vector, v);
+                },
 
-    static mult(c: number, u: CoordsXY): VectorXY {
-        return new VectorXY(c * u.x, c * u.y);
-    }
+                mult: (c: number): GyrovectorXY => {
+                    return factory.mult(c, vector);
+                },
 
-    magSq(): number {
-        return VectorXY.dot(this, this);
-    }
+                rotate: (radians: number): GyrovectorXY => {
+                    return factory.rotate(vector, radians);
+                },
 
-    mag(): number {
-        return this.magSq();
-    }
+                asArray: () => [x, y],
+                x,
+                y,
+            };
 
-    static rotate(u: CoordsXY, radians: number): VectorXY {
-        return new VectorXY(
-            u.x * Math.cos(radians) - u.y * Math.sin(radians),
-            u.x * Math.sin(radians) + u.y * Math.cos(radians),
-        );
-    }
-}
+            return vector;
+        },
+        dot: (u: GyrovectorXY, v: GyrovectorXY): number => {
+            return u.x * v.x + u.y * v.y;
+        },
+        add: (u: GyrovectorXY, v: GyrovectorXY): GyrovectorXY => {
+            return factory.createVector(u.x + v.x, u.y + v.y);
+        },
+        mult: (c: number, u: GyrovectorXY): GyrovectorXY => {
+            return factory.createVector(c * u.x, c * u.y);
+        },
+        rotate(u: GyrovectorXY, radians: number): GyrovectorXY {
+            return factory.createVector(
+                u.x * Math.cos(radians) - u.y * Math.sin(radians),
+                u.x * Math.sin(radians) + u.y * Math.cos(radians),
+            );
+        },
+    };
+
+    return factory;
+};

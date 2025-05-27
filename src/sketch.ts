@@ -1,28 +1,27 @@
 import p5 from 'p5';
-import { VectorHyperbolicXY } from './vectorHyperbolicXY';
+import { createGyrovectorFactory } from './createGyrovectorFactory';
+import { Gyrovector } from './gyrovector';
+
+const factory = createGyrovectorFactory(2, -1);
 
 new p5((p) => {
     const lineMap = (
         value: number,
         start1: number,
         end1: number,
-        start2: VectorHyperbolicXY,
-        end2: VectorHyperbolicXY,
-    ): VectorHyperbolicXY => {
+        start2: Gyrovector<2>,
+        end2: Gyrovector<2>,
+    ): Gyrovector<2> => {
         return start2.add(end2.mult(p.map(value, start1, end1, 0, 1)));
     };
 
-    const mapPoint = (
-        u: VectorHyperbolicXY,
-        fn: (x: number, y: number) => void,
-    ) => {
+    const mapPoint = (u: Gyrovector<2>, fn: (x: number, y: number) => void) => {
         const max = 0.4;
-        const x = p.map(u.x, -max, max, 0, p.width);
-        const y = p.map(u.y, -max, max, 0, p.width);
-        fn(x, y);
+        const [x, y] = u.asArray();
+        fn(p.map(x, -max, max, 0, p.width), p.map(y, -max, max, 0, p.width));
     };
 
-    const drawLine = (start: VectorHyperbolicXY, line: VectorHyperbolicXY) => {
+    const drawLine = (start: Gyrovector<2>, line: Gyrovector<2>) => {
         const segments = 100;
         p.beginShape();
         for (let n = 0; n <= segments; ++n) {
@@ -33,7 +32,7 @@ new p5((p) => {
         p.endShape();
     };
 
-    const drawPolygon = (u: VectorHyperbolicXY, sides: number) => {
+    const drawPolygon = (u: Gyrovector<2>, sides: number) => {
         const turn = (2 * Math.PI) / sides;
         const interiorAngle = ((sides - 2) * Math.PI) / sides;
         const firstTurn = Math.PI - 0.5 * interiorAngle;
@@ -90,7 +89,7 @@ new p5((p) => {
 
         const sign = absolutePhase % 2 ? 1 : -1;
 
-        const u = new VectorHyperbolicXY(size, 0).rotate(sign * frame / 100);
+        const u = factory.createVector(size, 0).rotate((sign * frame) / 100);
 
         drawPolygon(u, phase + 3);
     };
