@@ -27,4 +27,11 @@ export class VectorXY implements CoordsXY {
     mag(): number {
         return this.magSq();
     }
+
+    static rotate(u: CoordsXY, radians: number): VectorXY {
+        return new VectorXY(
+            u.x * Math.cos(radians) - u.y * Math.sin(radians),
+            u.x * Math.sin(radians) + u.y * Math.cos(radians),
+        );
+    }
 }
