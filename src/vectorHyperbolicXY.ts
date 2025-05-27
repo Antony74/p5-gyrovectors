@@ -1,15 +1,18 @@
 import { CoordsXY } from './coordsXY';
 import { VectorXY } from './vectorXY';
 
-export class VectorHyperbolic2 implements CoordsXY {
-    type: Readonly<string> = 'VectorHyperbolic2';
+export class VectorHyperbolicXY implements CoordsXY {
+    type: Readonly<string> = 'VectorHyperbolicXY';
 
     constructor(
         public x: number,
         public y: number,
     ) {}
 
-    static add(u: VectorHyperbolic2, v: VectorHyperbolic2): VectorHyperbolic2 {
+    static add(
+        u: VectorHyperbolicXY,
+        v: VectorHyperbolicXY,
+    ): VectorHyperbolicXY {
         const lhs = VectorXY.mult(
             1 + 2 * VectorXY.dot(u, v) + VectorXY.dot(v, v),
             u,
@@ -21,17 +24,17 @@ export class VectorHyperbolic2 implements CoordsXY {
             2 * VectorXY.dot(u, v) +
             VectorXY.dot(u, u) * VectorXY.dot(v, v);
         const result = VectorXY.mult(1 / bottom, top);
-        return new VectorHyperbolic2(result.x, result.y);
+        return new VectorHyperbolicXY(result.x, result.y);
     }
 
-    static mult(c: number, u: VectorHyperbolic2): VectorHyperbolic2 {
+    static mult(c: number, u: VectorHyperbolicXY): VectorHyperbolicXY {
         const _u = new VectorXY(u.x, u.y);
         if (c === 0 || (u.x === 0 && u.y === 0)) {
-            return new VectorHyperbolic2(0, 0);
+            return new VectorHyperbolicXY(0, 0);
         }
-        let lenu = _u.mag();
-        let normu = VectorXY.mult(1 / lenu, _u);
+        const lenu = _u.mag();
+        const normu = VectorXY.mult(1 / lenu, _u);
         const result = VectorXY.mult(Math.tanh(c * Math.atanh(lenu)), normu);
-        return new VectorHyperbolic2(result.x, result.y);
+        return new VectorHyperbolicXY(result.x, result.y);
     }
 }

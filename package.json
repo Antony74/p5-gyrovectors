@@ -2,6 +2,7 @@
     "name": "p5-gyrovectors",
     "version": "1.0.0",
     "scripts": {
+        "lint": "eslint src",
         "prettier": "prettier --write .",
         "start": "rimraf dist && parcel src/index.html",
         "tsc": "rimraf dist && tsc"
@@ -28,11 +29,14 @@
         "p5": "^1.11.7"
     },
     "devDependencies": {
+        "@eslint/js": "^9.27.0",
         "@types/p5": "^1.7.6",
+        "eslint": "^9.27.0",
         "parcel": "^2.15.2",
         "prettier": "^3.5.3",
         "rimraf": "^6.0.1",
-        "typescript": "^5.8.3"
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.32.1"
     },
     "prettier": {
         "tabWidth": 4,
