@@ -8,6 +8,8 @@ export type Gyrovector<Dimension extends number> = {
     rotate: (radians: number) => any;
 };
 
+export type Gyrovector2 = Gyrovector<2>;
+
 export type GyrovectorFactory<
     Dimension extends number,
     GyrovectorType extends Gyrovector<Dimension>,
