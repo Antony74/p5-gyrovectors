@@ -1,14 +1,17 @@
 import { CoordsXY } from './coordsXY';
-import { Gyrovector } from './gyrovector';
+import { Gyrovector, GyrovectorFactory } from './gyrovector';
 
-export type GyrovectorXY = Gyrovector<2> & CoordsXY;
-export type VectorXY = GyrovectorXY & {
+export type Measure = {
     magSq: () => number;
     mag: () => number;
 };
 
+export type VectorXY = Gyrovector<2, CoordsXY, Measure>;
+
 export const createVectorXYFactory = () => {
-    const factory = {
+    const factory: GyrovectorFactory<VectorXY, 2, CoordsXY, Measure> & {
+        dot: (u: CoordsXY, v: CoordsXY) => number;
+    } = {
         createVector: (x: number, y: number) => {
             const vector: VectorXY = {
                 magSq: () => {
@@ -19,15 +22,15 @@ export const createVectorXYFactory = () => {
                     return vector.magSq();
                 },
 
-                add: (v: GyrovectorXY): GyrovectorXY => {
+                add: (v: VectorXY): VectorXY => {
                     return factory.add(vector, v);
                 },
 
-                mult: (c: number): GyrovectorXY => {
+                mult: (c: number): VectorXY => {
                     return factory.mult(c, vector);
                 },
 
-                rotate: (radians: number): GyrovectorXY => {
+                rotate: (radians: number): VectorXY => {
                     return factory.rotate(vector, radians);
                 },
 
@@ -38,16 +41,16 @@ export const createVectorXYFactory = () => {
 
             return vector;
         },
-        dot: (u: GyrovectorXY, v: GyrovectorXY): number => {
+        dot: (u: CoordsXY, v: CoordsXY): number => {
             return u.x * v.x + u.y * v.y;
         },
-        add: (u: GyrovectorXY, v: GyrovectorXY): GyrovectorXY => {
+        add: (u: VectorXY, v: VectorXY): VectorXY => {
             return factory.createVector(u.x + v.x, u.y + v.y);
         },
-        mult: (c: number, u: GyrovectorXY): GyrovectorXY => {
+        mult: (c: number, u: VectorXY): VectorXY => {
             return factory.createVector(c * u.x, c * u.y);
         },
-        rotate(u: GyrovectorXY, radians: number): GyrovectorXY {
+        rotate(u: CoordsXY, radians: number): VectorXY {
             return factory.createVector(
                 u.x * Math.cos(radians) - u.y * Math.sin(radians),
                 u.x * Math.sin(radians) + u.y * Math.cos(radians),

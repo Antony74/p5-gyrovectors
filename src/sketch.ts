@@ -2,7 +2,7 @@ import p5 from 'p5';
 import { createGyrovectorFactory } from './createGyrovectorFactory';
 import { Gyrovector2 } from './gyrovector';
 
-const factory = createGyrovectorFactory(2, 0);
+const factory = createGyrovectorFactory(2, -1);
 
 new p5((p) => {
     const lineMap = (
