@@ -1,27 +1,28 @@
 import p5 from 'p5';
 import { createGyrovectorFactory } from './createGyrovectorFactory';
-import { Gyrovector2 } from './gyrovector';
 
 const factory = createGyrovectorFactory(2, -1);
+
+type GyrovectorType = ReturnType<typeof factory.createVector>;
 
 new p5((p) => {
     const lineMap = (
         value: number,
         start1: number,
         end1: number,
-        start2: Gyrovector2,
-        end2: Gyrovector2,
-    ): Gyrovector2 => {
+        start2: GyrovectorType,
+        end2: GyrovectorType,
+    ): GyrovectorType => {
         return start2.add(end2.mult(p.map(value, start1, end1, 0, 1)));
     };
 
-    const mapPoint = (u: Gyrovector2, fn: (x: number, y: number) => void) => {
+    const mapPoint = (u: GyrovectorType, fn: (x: number, y: number) => void) => {
         const max = 0.4;
         const [x, y] = u.asArray();
         fn(p.map(x, -max, max, 0, p.width), p.map(y, -max, max, 0, p.width));
     };
 
-    const drawLine = (start: Gyrovector2, line: Gyrovector2) => {
+    const drawLine = (start: GyrovectorType, line: GyrovectorType) => {
         const segments = 100;
         p.beginShape();
         for (let n = 0; n <= segments; ++n) {
@@ -32,7 +33,7 @@ new p5((p) => {
         p.endShape();
     };
 
-    const drawPolygon = (u: Gyrovector2, sides: number) => {
+    const drawPolygon = (u: GyrovectorType, sides: number) => {
         const turn = (2 * Math.PI) / sides;
         const interiorAngle = ((sides - 2) * Math.PI) / sides;
         const firstTurn = Math.PI - 0.5 * interiorAngle;
