@@ -9,7 +9,7 @@ export type Measure = {
 export type VectorXY = Gyrovector<2, CoordsXY, Measure>;
 
 export const createVectorXYFactory = () => {
-    const factory: GyrovectorFactory<VectorXY, 2, CoordsXY, Measure> & {
+    const factory: GyrovectorFactory<2, CoordsXY, Measure> & {
         dot: (u: CoordsXY, v: CoordsXY) => number;
     } = {
         createVector: (x: number, y: number) => {

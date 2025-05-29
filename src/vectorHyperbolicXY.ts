@@ -4,10 +4,11 @@ import { GyrovectorXY } from './gyrovectorXY';
 import { createVectorXYFactory } from './vectorXY';
 
 export const createVectorHyperbolicXYFactory = (): GyrovectorFactory<
-    GyrovectorXY, 2, CoordsXY
+    2,
+    CoordsXY
 > => {
     const vectorXY = createVectorXYFactory();
-    const factory: GyrovectorFactory<GyrovectorXY, 2, CoordsXY> = {
+    const factory: GyrovectorFactory<2, CoordsXY> = {
         createVector: (x: number, y: number): GyrovectorXY => {
             const vector: GyrovectorXY = {
                 add: (u: GyrovectorXY) => factory.add(vector, u),

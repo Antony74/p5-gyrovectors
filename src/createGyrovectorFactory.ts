@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Gyrovector, GyrovectorFactory } from './gyrovector';
+import { GyrovectorFactory } from './gyrovector';
 import { createVectorHyperbolicXYFactory } from './vectorHyperbolicXY';
 import { createVectorXYFactory } from './vectorXY';
 
 export const createGyrovectorFactory = <Dimension extends number>(
     dimension: Dimension,
     curvature: number,
-): GyrovectorFactory<Gyrovector<Dimension, unknown>, Dimension, unknown> => {
+): GyrovectorFactory<Dimension, unknown> => {
     if (dimension !== 2) {
         throw new Error(
             `createGyrovectorFactory currently only supports 2 dimensions`,
