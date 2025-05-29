@@ -3,7 +3,7 @@ import { NumberTuple } from './tuples';
 export type Gyrovector<
     Dimension extends number,
     Coords,
-    Measure extends object = object,
+    Measure = object,
 > = {
     asArray: () => NumberTuple<Dimension>;
     add: (
@@ -20,7 +20,7 @@ export type GyrovectorFactory<
     GyrovectorType extends Gyrovector<Dimension, Coords, Measure>,
     Dimension extends number,
     Coords,
-    Measure extends object = object,
+    Measure = object,
 > = {
     createVector: (...vec: NumberTuple<Dimension>) => GyrovectorType;
     add: (u: GyrovectorType, v: GyrovectorType) => GyrovectorType;
