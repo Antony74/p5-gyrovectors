@@ -1,7 +1,7 @@
 import p5 from 'p5';
-import { createGyrovectorFactory } from './createGyrovectorFactory';
+import { GyrovectorFactoryFactory } from './gyrovectorFactoryFactory';
 
-const factory = createGyrovectorFactory(2, -1);
+const factory = GyrovectorFactoryFactory.create(2, -1);
 
 type GyrovectorType = ReturnType<typeof factory.createVector>;
 
