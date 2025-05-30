@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {VectorXYFactory} from './vectorXY';
-import {VectorHyperbolicXYFactory} from './vectorHyperbolicXY'
+import { VectorXYFactory } from './vectorXY';
+import { VectorHyperbolicXYFactory } from './vectorHyperbolicXY';
 
 export const createGyrovectorFactory = <Dimension extends number>(
     dimension: Dimension,

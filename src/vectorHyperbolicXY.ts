@@ -9,15 +9,26 @@ export class VectorHyperbolicXY implements BaseVector<2, VectorHyperbolicXY> {
         public y: number,
     ) {}
 
-    add(u: VectorHyperbolicXY) {
-        return this.factory.add(this, u);
-    }
     asArray(): [number, number] {
         return [this.x, this.y];
     }
+
+    add(u: VectorHyperbolicXY) {
+        return this.factory.add(this, u);
+    }
+
+    sub(u: VectorHyperbolicXY) {
+        return this.factory.sub(this, u);
+    }
+
     mult(c: number): VectorHyperbolicXY {
         return this.factory.mult(c, this);
     }
+
+    div(c: number): VectorHyperbolicXY {
+        return this.factory.div(c, this);
+    }
+
     rotate(radians: number): VectorHyperbolicXY {
         return this.factory.rotate(this, radians);
     }
@@ -54,6 +65,10 @@ export class VectorHyperbolicXYFactory
         return this.createVector(result.x, result.y);
     }
 
+    sub(u: VectorHyperbolicXY, v: VectorHyperbolicXY): VectorHyperbolicXY {
+        return this.add(u, this.createVector(-v.x, -v.y));
+    }
+
     mult(c: number, u: VectorHyperbolicXY): VectorHyperbolicXY {
         const _u = this.vectorXYFactory.createVector(u.x, u.y);
         if (c === 0 || (u.x === 0 && u.y === 0)) {
@@ -66,6 +81,10 @@ export class VectorHyperbolicXYFactory
             normu,
         );
         return this.createVector(result.x, result.y);
+    }
+
+    div(c: number, u: VectorHyperbolicXY): VectorHyperbolicXY {
+        return this.mult(1 / c, u);
     }
 
     rotate(u: VectorHyperbolicXY, radians: number): VectorHyperbolicXY {

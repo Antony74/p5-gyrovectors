@@ -16,7 +16,10 @@ new p5((p) => {
         return start2.add(end2.mult(p.map(value, start1, end1, 0, 1)));
     };
 
-    const mapPoint = (u: GyrovectorType, fn: (x: number, y: number) => void) => {
+    const mapPoint = (
+        u: GyrovectorType,
+        fn: (x: number, y: number) => void,
+    ) => {
         const max = 0.4;
         const [x, y] = u.asArray();
         fn(p.map(x, -max, max, 0, p.width), p.map(y, -max, max, 0, p.width));
@@ -37,7 +40,7 @@ new p5((p) => {
         const turn = (2 * Math.PI) / sides;
         const interiorAngle = ((sides - 2) * Math.PI) / sides;
         const firstTurn = Math.PI - 0.5 * interiorAngle;
-        let currentPoint = u.mult(0.5);
+        let currentPoint = u.div(2);
         u = u.rotate(firstTurn);
         let nextPoint = currentPoint.add(u);
         for (let side = 1; side <= sides; ++side) {
