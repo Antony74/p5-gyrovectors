@@ -1,9 +1,9 @@
 import p5 from 'p5';
 import { GyrovectorSpaceFactory } from './gyrovectorSpaceFactory';
 
-const factory = GyrovectorSpaceFactory.create(2, -1);
+const space = GyrovectorSpaceFactory.create(2, -1);
 
-type GyrovectorType = ReturnType<typeof factory.createVector>;
+type GyrovectorType = ReturnType<typeof space.createVector>;
 
 new p5((p) => {
     const lineMap = (
@@ -93,7 +93,7 @@ new p5((p) => {
 
         const sign = absolutePhase % 2 ? 1 : -1;
 
-        const u = factory.createVector(size, 0).rotate((sign * frame) / 100);
+        const u = space.createVector(size, 0).rotate((sign * frame) / 100);
 
         drawPolygon(u, phase + 3);
     };
