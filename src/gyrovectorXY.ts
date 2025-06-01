@@ -1,46 +1,44 @@
-import { BaseVector, GyrovectorFactory } from './gyrovector';
+import { BaseGyrovector, GyrovectorSpace } from './baseGyrovector';
 import { VectorXYFactory } from './vectorXY';
 import * as trig from './curvatureDependentTrigonometricFunctions';
 
-export class VectorHyperbolicXY implements BaseVector<2, VectorHyperbolicXY> {
-    factory: VectorHyperbolicXYFactory;
+export class GyrovectorXY implements BaseGyrovector<2, GyrovectorXY> {
+    space: GyrovectorXYSpace;
 
     constructor(
         public readonly x: number,
         public readonly y: number,
         public readonly curvature: number,
     ) {
-        this.factory = new VectorHyperbolicXYFactory(curvature);
+        this.space = new GyrovectorXYSpace(curvature);
     }
 
     asArray(): [number, number] {
         return [this.x, this.y];
     }
 
-    add(u: VectorHyperbolicXY) {
-        return this.factory.add(this, u);
+    add(u: GyrovectorXY) {
+        return this.space.add(this, u);
     }
 
-    sub(u: VectorHyperbolicXY) {
-        return this.factory.sub(this, u);
+    sub(u: GyrovectorXY) {
+        return this.space.sub(this, u);
     }
 
-    mult(c: number): VectorHyperbolicXY {
-        return this.factory.mult(c, this);
+    mult(c: number): GyrovectorXY {
+        return this.space.mult(c, this);
     }
 
-    div(c: number): VectorHyperbolicXY {
-        return this.factory.div(c, this);
+    div(c: number): GyrovectorXY {
+        return this.space.div(c, this);
     }
 
-    rotate(radians: number): VectorHyperbolicXY {
-        return this.factory.rotate(this, radians);
+    rotate(radians: number): GyrovectorXY {
+        return this.space.rotate(this, radians);
     }
 }
 
-export class VectorHyperbolicXYFactory
-    implements GyrovectorFactory<2, VectorHyperbolicXY>
-{
+export class GyrovectorXYSpace implements GyrovectorSpace<2, GyrovectorXY> {
     vectorXYFactory = new VectorXYFactory();
     tan;
     atan;
@@ -50,11 +48,11 @@ export class VectorHyperbolicXYFactory
         this.atan = trig.atan(curvature);
     }
 
-    createVector(x: number, y: number): VectorHyperbolicXY {
-        return new VectorHyperbolicXY(x, y, this.curvature);
+    createVector(x: number, y: number): GyrovectorXY {
+        return new GyrovectorXY(x, y, this.curvature);
     }
 
-    add(u: VectorHyperbolicXY, v: VectorHyperbolicXY): VectorHyperbolicXY {
+    add(u: GyrovectorXY, v: GyrovectorXY): GyrovectorXY {
         const _u = this.vectorXYFactory.createVector(u.x, u.y);
         const _v = this.vectorXYFactory.createVector(v.x, v.y);
         const lhs = this.vectorXYFactory.mult(
@@ -79,11 +77,11 @@ export class VectorHyperbolicXYFactory
         return this.createVector(result.x, result.y);
     }
 
-    sub(u: VectorHyperbolicXY, v: VectorHyperbolicXY): VectorHyperbolicXY {
+    sub(u: GyrovectorXY, v: GyrovectorXY): GyrovectorXY {
         return this.add(u, this.createVector(-v.x, -v.y));
     }
 
-    mult(c: number, u: VectorHyperbolicXY): VectorHyperbolicXY {
+    mult(c: number, u: GyrovectorXY): GyrovectorXY {
         const _u = this.vectorXYFactory.createVector(u.x, u.y);
         if (c === 0 || (u.x === 0 && u.y === 0)) {
             return this.createVector(0, 0);
@@ -97,11 +95,11 @@ export class VectorHyperbolicXYFactory
         return this.createVector(result.x, result.y);
     }
 
-    div(c: number, u: VectorHyperbolicXY): VectorHyperbolicXY {
+    div(c: number, u: GyrovectorXY): GyrovectorXY {
         return this.mult(1 / c, u);
     }
 
-    rotate(u: VectorHyperbolicXY, radians: number): VectorHyperbolicXY {
+    rotate(u: GyrovectorXY, radians: number): GyrovectorXY {
         const result = this.vectorXYFactory
             .createVector(u.x, u.y)
             .rotate(radians);

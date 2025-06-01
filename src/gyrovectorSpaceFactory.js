@@ -1,7 +1,7 @@
 import { VectorXYFactory } from './vectorXY';
-import { VectorHyperbolicXYFactory } from './vectorHyperbolicXY';
+import { GyrovectorXYSpace } from './gyrovectorXY';
 
-export class GyrovectorFactoryFactory {
+export class GyrovectorSpaceFactory {
     static create(dimension, curvature) {
         if (dimension !== 2) {
             throw new Error(
@@ -12,7 +12,7 @@ export class GyrovectorFactoryFactory {
         if (curvature === 0) {
             return new VectorXYFactory();
         } else {
-            return new VectorHyperbolicXYFactory(curvature);
+            return new GyrovectorXYSpace(curvature);
         }
     }
 }

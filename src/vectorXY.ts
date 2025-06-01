@@ -1,6 +1,6 @@
-import { BaseVector, GyrovectorFactory } from './gyrovector';
+import { BaseGyrovector, GyrovectorSpace } from './baseGyrovector';
 
-export class VectorXY implements BaseVector<2, VectorXY> {
+export class VectorXY implements BaseGyrovector<2, VectorXY> {
     factory = new VectorXYFactory();
 
     constructor(
@@ -41,7 +41,7 @@ export class VectorXY implements BaseVector<2, VectorXY> {
     }
 }
 
-export class VectorXYFactory implements GyrovectorFactory<2, VectorXY> {
+export class VectorXYFactory implements GyrovectorSpace<2, VectorXY> {
     createVector(x: number, y: number): VectorXY {
         return new VectorXY(x, y);
     }

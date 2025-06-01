@@ -1,6 +1,6 @@
 import { NumberTuple } from './tuples';
 
-export interface BaseVector<Dimension extends number, Gyrovector> {
+export interface BaseGyrovector<Dimension extends number, Gyrovector> {
     asArray(): NumberTuple<Dimension>;
     add(v: Gyrovector): Gyrovector;
     sub(v: Gyrovector): Gyrovector;
@@ -9,9 +9,9 @@ export interface BaseVector<Dimension extends number, Gyrovector> {
     rotate(radians: number): Gyrovector;
 }
 
-export interface GyrovectorFactory<
+export interface GyrovectorSpace<
     Dimension extends number,
-    Gyrovector extends BaseVector<Dimension, Gyrovector>,
+    Gyrovector extends BaseGyrovector<Dimension, Gyrovector>,
 > {
     createVector: (...vec: NumberTuple<Dimension>) => Gyrovector;
     add: (u: Gyrovector, v: Gyrovector) => Gyrovector;
