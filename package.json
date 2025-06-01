@@ -4,7 +4,7 @@
     "scripts": {
         "lint": "eslint src",
         "prettier": "prettier --write .",
-        "start": "rimraf dist && parcel src/index.html",
+        "start": "rimraf dist && rimraf .parcel-cache && parcel src/index.html",
         "tsc": "rimraf dist && tsc"
     },
     "repository": {
