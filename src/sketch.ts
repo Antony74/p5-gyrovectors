@@ -39,7 +39,7 @@ new p5((p) => {
     const drawPolygon = (u: GyrovectorType, sides: number) => {
         const turn = (2 * Math.PI) / sides;
         const interiorAngle = ((sides - 2) * Math.PI) / sides;
-        const firstTurn = Math.PI - 0.5 * interiorAngle;
+        const firstTurn = Math.PI - (0.5 * interiorAngle);
         let currentPoint = u.div(2);
         u = u.rotate(firstTurn);
         let nextPoint = currentPoint.add(u);

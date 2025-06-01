@@ -57,22 +57,22 @@ export class GyrovectorXYSpace implements GyrovectorSpace<2, GyrovectorXY> {
         const _v = this.vectorXYFactory.createVector(v.x, v.y);
         const lhs = this.vectorXYFactory.mult(
             1 -
-                2 * this.curvature * this.vectorXYFactory.dot(_u, _v) +
+                (2 * this.curvature * this.vectorXYFactory.dot(_u, _v)) +
                 this.vectorXYFactory.dot(_v, _v),
             _u,
         );
         const rhs = this.vectorXYFactory.mult(
-            1 + this.curvature * this.vectorXYFactory.dot(_u, _u),
+            1 + (this.curvature * this.vectorXYFactory.dot(_u, _u)),
             _v,
         );
         const top = this.vectorXYFactory.add(lhs, rhs);
         const bottom =
             1 -
-            2 * this.curvature * this.vectorXYFactory.dot(_u, _v) +
-            this.curvature *
+            (2 * this.curvature * this.vectorXYFactory.dot(_u, _v)) +
+            (this.curvature *
                 this.curvature *
                 this.vectorXYFactory.dot(_u, _u) *
-                this.vectorXYFactory.dot(_v, _v);
+                this.vectorXYFactory.dot(_v, _v));
         const result = this.vectorXYFactory.mult(1 / bottom, top);
         return this.createVector(result.x, result.y);
     }

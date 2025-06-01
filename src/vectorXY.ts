@@ -47,7 +47,7 @@ export class VectorXYFactory implements GyrovectorSpace<2, VectorXY> {
     }
 
     dot(u: VectorXY, v: VectorXY): number {
-        return u.x * v.x + u.y * v.y;
+        return (u.x * v.x) + (u.y * v.y);
     }
 
     add(u: VectorXY, v: VectorXY): VectorXY {
@@ -68,8 +68,8 @@ export class VectorXYFactory implements GyrovectorSpace<2, VectorXY> {
 
     rotate(u: VectorXY, radians: number): VectorXY {
         return this.createVector(
-            u.x * Math.cos(radians) - u.y * Math.sin(radians),
-            u.x * Math.sin(radians) + u.y * Math.cos(radians),
+            (u.x * Math.cos(radians)) - (u.y * Math.sin(radians)),
+            (u.x * Math.sin(radians)) + (u.y * Math.cos(radians)),
         );
     }
 }
