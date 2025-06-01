@@ -4,7 +4,7 @@
     "scripts": {
         "lint": "eslint src",
         "prettier": "prettier --write .",
-        "start": "rimraf dist && parcel src/index.html",
+        "start": "rimraf dist && parcel src/index.html --public-url /p5-gyrovectors/dist",
         "tsc": "rimraf dist && tsc"
     },
     "repository": {
