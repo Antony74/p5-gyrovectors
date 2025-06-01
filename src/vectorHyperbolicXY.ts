@@ -1,13 +1,17 @@
 import { BaseVector, GyrovectorFactory } from './gyrovector';
 import { VectorXYFactory } from './vectorXY';
+import * as trig from './curvatureDependentTrigonometricFunctions';
 
 export class VectorHyperbolicXY implements BaseVector<2, VectorHyperbolicXY> {
-    factory = new VectorHyperbolicXYFactory();
+    factory: VectorHyperbolicXYFactory;
 
     constructor(
-        public x: number,
-        public y: number,
-    ) {}
+        public readonly x: number,
+        public readonly y: number,
+        public readonly curvature: number,
+    ) {
+        this.factory = new VectorHyperbolicXYFactory(curvature);
+    }
 
     asArray(): [number, number] {
         return [this.x, this.y];
@@ -38,29 +42,39 @@ export class VectorHyperbolicXYFactory
     implements GyrovectorFactory<2, VectorHyperbolicXY>
 {
     vectorXYFactory = new VectorXYFactory();
+    tan;
+    atan;
+
+    constructor(public readonly curvature: number) {
+        this.tan = trig.tan(curvature);
+        this.atan = trig.atan(curvature);
+    }
 
     createVector(x: number, y: number): VectorHyperbolicXY {
-        return new VectorHyperbolicXY(x, y);
+        return new VectorHyperbolicXY(x, y, this.curvature);
     }
 
     add(u: VectorHyperbolicXY, v: VectorHyperbolicXY): VectorHyperbolicXY {
         const _u = this.vectorXYFactory.createVector(u.x, u.y);
         const _v = this.vectorXYFactory.createVector(v.x, v.y);
         const lhs = this.vectorXYFactory.mult(
-            1 +
-                2 * this.vectorXYFactory.dot(_u, _v) +
+            1 -
+                2 * this.curvature * this.vectorXYFactory.dot(_u, _v) +
                 this.vectorXYFactory.dot(_v, _v),
             _u,
         );
         const rhs = this.vectorXYFactory.mult(
-            1 - this.vectorXYFactory.dot(_u, _u),
+            1 + this.curvature * this.vectorXYFactory.dot(_u, _u),
             _v,
         );
         const top = this.vectorXYFactory.add(lhs, rhs);
         const bottom =
-            1 +
-            2 * this.vectorXYFactory.dot(_u, _v) +
-            this.vectorXYFactory.dot(_u, _u) * this.vectorXYFactory.dot(_v, _v);
+            1 -
+            2 * this.curvature * this.vectorXYFactory.dot(_u, _v) +
+            this.curvature *
+                this.curvature *
+                this.vectorXYFactory.dot(_u, _u) *
+                this.vectorXYFactory.dot(_v, _v);
         const result = this.vectorXYFactory.mult(1 / bottom, top);
         return this.createVector(result.x, result.y);
     }
@@ -77,7 +91,7 @@ export class VectorHyperbolicXYFactory
         const lenu = _u.mag();
         const normu = this.vectorXYFactory.mult(1 / lenu, _u);
         const result = this.vectorXYFactory.mult(
-            Math.tanh(c * Math.atanh(lenu)),
+            this.tan(c * this.atan(lenu)),
             normu,
         );
         return this.createVector(result.x, result.y);

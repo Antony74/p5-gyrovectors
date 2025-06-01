@@ -4,8 +4,8 @@ export class VectorXY implements BaseVector<2, VectorXY> {
     factory = new VectorXYFactory();
 
     constructor(
-        public x: number,
-        public y: number,
+        public readonly x: number,
+        public readonly y: number,
     ) {}
 
     magSq() {

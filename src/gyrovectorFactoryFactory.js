@@ -9,15 +9,10 @@ export class GyrovectorFactoryFactory {
             );
         }
 
-        switch (curvature) {
-            case 0:
-                return new VectorXYFactory();
-            case -1:
-                return new VectorHyperbolicXYFactory();
-            default:
-                throw new Error(
-                    `createGyrovectorFactory currently only supports curvatures of 0 (Euclidean) and -1 (Hyperbolic)`,
-                );
+        if (curvature === 0) {
+            return new VectorXYFactory();
+        } else {
+            return new VectorHyperbolicXYFactory(curvature);
         }
     }
 }
