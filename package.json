@@ -25,7 +25,8 @@
     "homepage": "https://github.com/Antony74/p5-gyrovectors#readme",
     "description": "",
     "dependencies": {
-        "p5": "^1.11.7"
+        "p5": "^1.11.7",
+        "gyrovector": "file:../gyrovector"
     },
     "devDependencies": {
         "@eslint/js": "^9.27.0",

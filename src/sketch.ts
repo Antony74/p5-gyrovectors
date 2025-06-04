@@ -1,7 +1,7 @@
 import p5 from 'p5';
-import { GyrovectorSpaceFactory } from './gyrovectorSpaceFactory';
+import { GyrovectorSpaceFactory } from 'gyrovector/src/gyrovectorSpaceFactory';
 
-const space = GyrovectorSpaceFactory.create(2, -1);
+const space = GyrovectorSpaceFactory.create(2, 1);
 
 type GyrovectorType = ReturnType<typeof space.createVector>;
 
@@ -21,8 +21,7 @@ new p5((p) => {
         fn: (x: number, y: number) => void,
     ) => {
         const max = 0.4;
-        const [x, y] = u.asArray();
-        fn(p.map(x, -max, max, 0, p.width), p.map(y, -max, max, 0, p.width));
+        fn(p.map(u.x, -max, max, 0, p.width), p.map(u.y, -max, max, 0, p.width));
     };
 
     const drawLine = (start: GyrovectorType, line: GyrovectorType) => {
