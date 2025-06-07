@@ -21,7 +21,11 @@ new p5((p) => {
         fn: (x: number, y: number) => void,
     ) => {
         const max = 0.4;
-        fn(p.map(u.x, -max, max, 0, p.width), p.map(u.y, -max, max, 0, p.width));
+        const [x, y] = u.array();
+        fn(
+            p.map(x, -max, max, 0, p.width),
+            p.map(y, -max, max, 0, p.width),
+        );
     };
 
     const drawLine = (start: GyrovectorType, line: GyrovectorType) => {
@@ -92,7 +96,7 @@ new p5((p) => {
 
         const sign = absolutePhase % 2 ? 1 : -1;
 
-        const u = space.createVector(size, 0).rotate((sign * frame) / 100);
+        const u = space.createVector([size, 0]).rotate((sign * frame) / 100);
 
         drawPolygon(u, phase + 3);
     };
