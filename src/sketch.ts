@@ -96,7 +96,7 @@ new p5((p) => {
 
         const sign = absolutePhase % 2 ? 1 : -1;
 
-        const u = space.createVector([size, 0]).rotate((sign * frame) / 100);
+        const u = space.createVector(size, 0).rotate((sign * frame) / 100);
 
         drawPolygon(u, phase + 3);
     };
