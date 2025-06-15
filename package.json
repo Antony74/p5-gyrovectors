@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "lint": "prettier --write . && eslint src --fix",
-        "start": "rimraf dist && parcel src/index.html --public-url /p5-gyrovectors/dist",
+        "start": "rimraf dist && rimraf .parcel-cache && parcel src/index.html --public-url /p5-gyrovectors/dist",
         "tsc": "rimraf dist && tsc"
     },
     "repository": {
