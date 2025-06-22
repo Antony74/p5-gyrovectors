@@ -1,7 +1,7 @@
 import p5 from 'p5';
 import { GyrovectorSpaceFactory } from 'gyrovector/src/gyrovectorSpaceFactory';
 
-const space = GyrovectorSpaceFactory.create(2, 1);
+const space = GyrovectorSpaceFactory.create(2, 1 / 200000);
 
 type GyrovectorType = ReturnType<typeof space.createVector>;
 
@@ -16,25 +16,12 @@ new p5((p) => {
         return start2.add(end2.mult(p.map(value, start1, end1, 0, 1)));
     };
 
-    const mapPoint = (
-        u: GyrovectorType,
-        fn: (x: number, y: number) => void,
-    ) => {
-        const max = 0.4;
-        const [x, y] = u.array();
-        fn(
-            p.map(x, -max, max, 0, p.width),
-            p.map(y, -max, max, 0, p.width),
-        );
-    };
-
     const drawLine = (start: GyrovectorType, line: GyrovectorType) => {
         const segments = 100;
         p.beginShape();
         for (let n = 0; n <= segments; ++n) {
-            mapPoint(lineMap(n, 0, segments, start, line), (x, y) =>
-                p.vertex(x, y),
-            );
+            const v = lineMap(n, 0, segments, start, line);
+            p.vertex(v.x, v.y);
         }
         p.endShape();
     };
@@ -64,6 +51,7 @@ new p5((p) => {
     const animationPhaseLength = animationLength / animationPhases;
 
     p.draw = () => {
+        p.translate(0.5 * p.width, 0.5 * p.height);
         p.background(0, 0, 95);
         p.noFill();
         p.strokeWeight(10);
@@ -92,7 +80,7 @@ new p5((p) => {
         // const o = new VectorHyperbolicXY(0, 0);
         // mapPoint(o, (x, y) => p.point(x, y));
 
-        const size = p.map(frame, 0, animationPhaseLength, 0, 0.7);
+        const size = p.map(frame, 0, animationPhaseLength, 0, 300);
 
         const sign = absolutePhase % 2 ? 1 : -1;
 
