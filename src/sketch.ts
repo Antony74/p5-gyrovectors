@@ -77,9 +77,6 @@ new p5((p) => {
                 break;
         }
 
-        // const o = new VectorHyperbolicXY(0, 0);
-        // mapPoint(o, (x, y) => p.point(x, y));
-
         const size = p.map(frame, 0, animationPhaseLength, 0, 300);
 
         const sign = absolutePhase % 2 ? 1 : -1;
