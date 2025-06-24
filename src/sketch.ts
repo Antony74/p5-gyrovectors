@@ -1,7 +1,9 @@
 import p5 from 'p5';
 import { GyrovectorSpaceFactory } from 'gyrovector/src/gyrovectorSpaceFactory';
 
-const space = GyrovectorSpaceFactory.create(2, 1 / 200000);
+const space = GyrovectorSpaceFactory.create(2, -1 / 200000); // Hyperbolic
+//const space = GyrovectorSpaceFactory.create(2, 0); // Euclidean
+//const space = GyrovectorSpaceFactory.create(2, 1 / 200000); // Spherical
 
 type GyrovectorType = ReturnType<typeof space.createVector>;
 
