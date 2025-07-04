@@ -1,13 +1,21 @@
 import p5 from 'p5';
 import { GyrovectorSpaceFactory } from 'gyrovector/src/gyrovectorSpaceFactory';
 
-const space = GyrovectorSpaceFactory.create(2, -1 / 200000); // Hyperbolic
+const width = 500;
+const height = 500;
+
+const space = GyrovectorSpaceFactory.create(2, -1 / (width * height)); // Hyperbolic
 //const space = GyrovectorSpaceFactory.create(2, 0); // Euclidean
-//const space = GyrovectorSpaceFactory.create(2, 1 / 200000); // Spherical
+//const space = GyrovectorSpaceFactory.create(2, 1 / (width * height)); // Spherical
 
 type GyrovectorType = ReturnType<typeof space.createVector>;
 
 new p5((p) => {
+    p.setup = () => {
+        p.createCanvas(width, height);
+        p.colorMode(p.HSB);
+    };
+
     const lineMap = (
         value: number,
         start1: number,
@@ -41,11 +49,6 @@ new p5((p) => {
             u = u.rotate(turn);
             nextPoint = currentPoint.add(u);
         }
-    };
-
-    p.setup = () => {
-        p.createCanvas(500, 500);
-        p.colorMode(p.HSB);
     };
 
     const animationLength = 1000;
