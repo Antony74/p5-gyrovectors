@@ -12,6 +12,7 @@ new p5((p) => {
     p.setup = () => {
         p.createCanvas(500, 500);
         p.colorMode(p.HSB);
+        p.textAlign(p.CENTER);
     };
 
     const lineMap = <GyrovectorType extends Vec2<GyrovectorType>>(
@@ -58,14 +59,22 @@ new p5((p) => {
     const animationPhaseLength = 330;
 
     p.draw = () => {
-        p.translate(0.5 * p.width, 0.5 * p.height);
         p.background(0, 0, 95);
-        p.noFill();
-        p.strokeWeight(10);
 
         const phaseIndex =
             Math.floor(p.frameCount / animationPhaseLength) % phases.length;
         const phase = phases[phaseIndex];
+
+        p.strokeWeight(1);
+        p.textSize(30);
+        p.stroke(0);
+        p.fill(0);
+        p.text(phase.type, 0.5 * p.width, p.height - 50);
+
+        p.translate(0.5 * p.width, 0.5 * p.height);
+
+        p.noFill();
+        p.strokeWeight(10);
 
         const frame = p.frameCount % animationPhaseLength;
         const alpha = p.map(frame, 0, animationPhaseLength, 4, 0);
