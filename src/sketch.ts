@@ -65,9 +65,8 @@ new p5((p) => {
             Math.floor(p.frameCount / animationPhaseLength) % phases.length;
         const phase = phases[phaseIndex];
 
-        p.strokeWeight(1);
-        p.textSize(30);
-        p.stroke(0);
+        p.textSize(50);
+        p.noStroke();
         p.fill(0);
         p.text(phase.type, 0.5 * p.width, p.height - 50);
 
