@@ -1,12 +1,21 @@
 import p5 from 'p5';
-import { GyrovectorSpaceFactory } from './gyrovectorSpaceFactory';
+import { GyrovectorSpaceFactory } from 'gyrovector/src/gyrovectorSpaceFactory';
+import { phases } from './phases';
+import { VectorLike } from 'gyrovector/src/vectorLike';
 
-const space = GyrovectorSpaceFactory.create(2, -1);
-
-type GyrovectorType = ReturnType<typeof space.createVector>;
+type Vec2<GyrovectorType> = VectorLike<2, GyrovectorType> & {
+    x: number;
+    y: number;
+};
 
 new p5((p) => {
-    const lineMap = (
+    p.setup = () => {
+        p.createCanvas(500, 500);
+        p.colorMode(p.HSB);
+        p.textAlign(p.CENTER);
+    };
+
+    const lineMap = <GyrovectorType extends Vec2<GyrovectorType>>(
         value: number,
         start1: number,
         end1: number,
@@ -16,30 +25,26 @@ new p5((p) => {
         return start2.add(end2.mult(p.map(value, start1, end1, 0, 1)));
     };
 
-    const mapPoint = (
-        u: GyrovectorType,
-        fn: (x: number, y: number) => void,
+    const drawLine = <GyrovectorType extends Vec2<GyrovectorType>>(
+        start: GyrovectorType,
+        line: GyrovectorType,
     ) => {
-        const max = 0.4;
-        const [x, y] = u.asArray();
-        fn(p.map(x, -max, max, 0, p.width), p.map(y, -max, max, 0, p.width));
-    };
-
-    const drawLine = (start: GyrovectorType, line: GyrovectorType) => {
         const segments = 100;
         p.beginShape();
         for (let n = 0; n <= segments; ++n) {
-            mapPoint(lineMap(n, 0, segments, start, line), (x, y) =>
-                p.vertex(x, y),
-            );
+            const v = lineMap(n, 0, segments, start, line);
+            p.vertex(v.x, v.y);
         }
         p.endShape();
     };
 
-    const drawPolygon = (u: GyrovectorType, sides: number) => {
+    const drawPolygon = <GyrovectorType extends Vec2<GyrovectorType>>(
+        u: GyrovectorType,
+        sides: number,
+    ) => {
         const turn = (2 * Math.PI) / sides;
         const interiorAngle = ((sides - 2) * Math.PI) / sides;
-        const firstTurn = Math.PI - 0.5 * interiorAngle;
+        const firstTurn = Math.PI - (0.5 * interiorAngle);
         let currentPoint = u.div(2);
         u = u.rotate(firstTurn);
         let nextPoint = currentPoint.add(u);
@@ -51,50 +56,61 @@ new p5((p) => {
         }
     };
 
-    p.setup = () => {
-        p.createCanvas(500, 500);
-        p.colorMode(p.HSB);
-    };
-
-    const animationLength = 1000;
-    const animationPhases = 3;
-    const animationPhaseLength = animationLength / animationPhases;
+    const animationPhaseLength = 330;
 
     p.draw = () => {
         p.background(0, 0, 95);
+
+        const phaseIndex =
+            Math.floor(p.frameCount / animationPhaseLength) % phases.length;
+        const phase = phases[phaseIndex];
+
+        p.textSize(50);
+        p.noStroke();
+        p.fill(0);
+        p.text(phase.type, 0.5 * p.width, p.height - 50);
+
+        p.translate(0.5 * p.width, 0.5 * p.height);
+
         p.noFill();
         p.strokeWeight(10);
-
-        const phase = Math.floor(
-            (p.frameCount % animationLength) / animationPhaseLength,
-        );
-
-        const absolutePhase = Math.floor(p.frameCount / animationPhaseLength);
 
         const frame = p.frameCount % animationPhaseLength;
         const alpha = p.map(frame, 0, animationPhaseLength, 4, 0);
 
-        switch (phase) {
-            case 0:
+        switch (phase.sides) {
+            case 3:
                 p.stroke(0, 255, 255, alpha);
                 break;
-            case 1:
+            case 4:
                 p.stroke(30, 255, 255, alpha);
                 break;
-            case 2:
+            case 5:
                 p.stroke(220, 255, 255, alpha);
                 break;
         }
 
-        // const o = new VectorHyperbolicXY(0, 0);
-        // mapPoint(o, (x, y) => p.point(x, y));
+        let curvature;
+        switch (phase.type) {
+            case 'Hyperbolic':
+                curvature = -1 / (p.width * p.height);
+                break;
+            case 'Euclidean':
+                curvature = 0;
+                break;
+            case 'Spherical':
+                curvature = 1 / (p.width * p.height);
+                break;
+        }
 
-        const size = p.map(frame, 0, animationPhaseLength, 0, 0.7);
+        const space = GyrovectorSpaceFactory.create(2, curvature);
 
-        const sign = absolutePhase % 2 ? 1 : -1;
+        const size = p.map(frame, 0, animationPhaseLength, 0, 300);
 
-        const u = space.createVector(size, 0).rotate((sign * frame) / 100);
+        const u = space
+            .createVector(size, 0)
+            .rotate((phase.sign * frame) / 100);
 
-        drawPolygon(u, phase + 3);
+        drawPolygon(u, phase.sides);
     };
 });

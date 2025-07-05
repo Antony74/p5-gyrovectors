@@ -2,11 +2,12 @@ import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import { defineConfig } from 'eslint/config';
+import noMixedOperators from 'eslint-plugin-no-mixed-operators';
 
 export default defineConfig([
     {
         files: ['**/*.{js,mjs,cjs,ts}'],
-        plugins: { js },
+        plugins: { js, noMixedOperators },
         extends: ['js/recommended'],
     },
     {
@@ -28,6 +29,7 @@ export default defineConfig([
                     ignoreRestSiblings: true,
                 },
             ],
+            'noMixedOperators/no-mixed-operators': ['error'],
         },
     },
 ]);

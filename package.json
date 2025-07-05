@@ -2,9 +2,8 @@
     "name": "p5-gyrovectors",
     "version": "1.0.0",
     "scripts": {
-        "lint": "eslint src",
-        "prettier": "prettier --write .",
-        "start": "rimraf dist && parcel src/index.html --public-url /p5-gyrovectors/dist",
+        "lint": "prettier --write . && eslint src --fix",
+        "start": "rimraf dist && rimraf .parcel-cache && parcel build src/index.html --public-url /p5-gyrovectors/dist && http-server ..",
         "tsc": "rimraf dist && tsc"
     },
     "repository": {
@@ -26,13 +25,18 @@
     "homepage": "https://github.com/Antony74/p5-gyrovectors#readme",
     "description": "",
     "dependencies": {
+        "github-fork-ribbon-css": "^0.2.3",
+        "gyrovector": "file:../gyrovector",
         "p5": "^1.11.7"
     },
     "devDependencies": {
         "@eslint/js": "^9.27.0",
         "@types/p5": "^1.7.6",
         "eslint": "^9.27.0",
+        "eslint-plugin-no-mixed-operators": "^1.1.1",
+        "http-server": "^14.1.1",
         "parcel": "^2.15.2",
+        "parcel-reporter-static-files-copy": "^1.5.3",
         "prettier": "^3.5.3",
         "rimraf": "^6.0.1",
         "typescript": "^5.8.3",
@@ -41,5 +45,8 @@
     "prettier": {
         "tabWidth": 4,
         "singleQuote": true
+    },
+    "staticFiles": {
+        "staticPath": "node_modules/github-fork-ribbon-css/gh-fork-ribbon.css"
     }
 }
