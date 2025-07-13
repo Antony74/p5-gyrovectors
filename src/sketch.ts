@@ -1,7 +1,7 @@
 import p5 from 'p5';
-import { GyrovectorSpaceFactory } from 'gyrovector/src/gyrovectorSpaceFactory';
+import { GyrovectorSpaceFactory } from 'gyrovector';
 import { phases } from './phases';
-import { VectorLike } from 'gyrovector/src/vectorLike';
+import { VectorLike } from 'gyrovector';
 
 type Vec2<GyrovectorType> = VectorLike<2, GyrovectorType> & {
     x: number;
