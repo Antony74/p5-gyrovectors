@@ -2,6 +2,7 @@ import p5 from 'p5';
 import { GyrovectorSpaceFactory } from 'gyrovector';
 import { phases } from './phases';
 import { VectorLike } from 'gyrovector';
+import { drawLine } from './drawLine';
 
 type Vec2<GyrovectorType> = VectorLike<2, GyrovectorType> & {
     x: number;
@@ -15,29 +16,6 @@ new p5((p) => {
         p.textAlign(p.CENTER);
     };
 
-    const lineMap = <GyrovectorType extends Vec2<GyrovectorType>>(
-        value: number,
-        start1: number,
-        end1: number,
-        start2: GyrovectorType,
-        end2: GyrovectorType,
-    ): GyrovectorType => {
-        return start2.add(end2.mult(p.map(value, start1, end1, 0, 1)));
-    };
-
-    const drawLine = <GyrovectorType extends Vec2<GyrovectorType>>(
-        start: GyrovectorType,
-        line: GyrovectorType,
-    ) => {
-        const segments = 100;
-        p.beginShape();
-        for (let n = 0; n <= segments; ++n) {
-            const v = lineMap(n, 0, segments, start, line);
-            p.vertex(v.x, v.y);
-        }
-        p.endShape();
-    };
-
     const drawPolygon = <GyrovectorType extends Vec2<GyrovectorType>>(
         u: GyrovectorType,
         sides: number,
@@ -49,7 +27,7 @@ new p5((p) => {
         u = u.rotate(firstTurn);
         let nextPoint = currentPoint.add(u);
         for (let side = 1; side <= sides; ++side) {
-            drawLine(currentPoint, u);
+            drawLine(p, currentPoint, u);
             currentPoint = nextPoint;
             u = u.rotate(turn);
             nextPoint = currentPoint.add(u);
